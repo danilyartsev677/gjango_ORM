@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Каталог{% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="header">
+            <h1><a href="/catalog">Каталог</a></h1>
+        </div>
+
+        <div class="sort-block">
+            Сортировать по:
+            <a href="/catalog?sort=name">названию</a> |
+            <a href="/catalog?sort=min_price">цене (возрастание)</a> |
+            <a href="/catalog?sort=max_price">цене (убывание)</a>
+        </div>
+
+        <div class="content">
+            {% for phone in phones %}
+                <div class="phone-card">
+                    <a href="/catalog/{{ phone.slug }}">
+                        <img src="{{ phone.image }}" alt="{{ phone.name }}" width="200">
+                        <h3>{{ phone.name }}</h3>
+                        <p>Цена: {{ phone.price }} руб.</p>
+                        <p>Дата выхода: {{ phone.release_date }}</p>
+                        {% if phone.lte_exists %}
+                            <p>LTE: есть</p>
+                        {% else %}
+                            <p>LTE: нет</p>
+                        {% endif %}
+                    </a>
+                </div>
+            {% empty %}
+                <p>Телефоны не найдены. Убедитесь, что вы выполнили команду: python manage.py import_phones</p>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
